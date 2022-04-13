@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Main {
 
     public static String getAscii(STATE state) {
@@ -33,6 +35,9 @@ public class Main {
         for (STATE s : STATE.values()) {
             System.out.println(getAscii(s));
         }
+        Words words = new Words();
+        Random rnd = new Random();
+        System.out.println(words.wordList[rnd.nextInt(words.wordList.length - 1)]);
     }
 
 }
