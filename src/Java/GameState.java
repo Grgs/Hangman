@@ -2,7 +2,7 @@ public class GameState {
 
     public STATE state;
 
-    public void GameState() {
+    public GameState() {
         state = STATE.INITIAL;
     }
 
