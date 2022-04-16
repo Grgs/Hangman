@@ -5,25 +5,25 @@ import java.util.stream.Collectors;
 public class SecretWord {
     String word;
     WordChar[] wordChars = new WordChar[3];
-    WordState wordState;
+    WordMatch wordMatch;
 
     public SecretWord() {
         Random rnd = new Random();
-        Words words = new Words();
-        this.setWord(words.wordList[rnd.nextInt(words.wordList.length - 1)]);
-        this.wordState = WordState.NO_MATCH;
+        WordsList wordsList = new WordsList();
+        this.setWord(wordsList.wordList[rnd.nextInt(wordsList.wordList.length - 1)]);
+        this.wordMatch = WordMatch.NO_MATCH;
     }
 
     public void checkChar(char c) {
-        this.wordState = WordState.NO_MATCH;
+        this.wordMatch = WordMatch.NO_MATCH;
         for (int i = 0; i < 3; i++) {
             if (this.wordChars[i].c == c) {
                 this.wordChars[i].revealed = true;
-                this.wordState = WordState.PART_MATCH;
+                this.wordMatch = WordMatch.PART_MATCH;
             }
         }
         if (Arrays.stream(wordChars).allMatch(ch -> ch.revealed)) {
-            this.wordState = WordState.ALL_MATCH;
+            this.wordMatch = WordMatch.ALL_MATCH;
         }
     }
 

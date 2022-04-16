@@ -1,33 +1,33 @@
 public class GameState {
 
-    public STATE state;
+    public GameStates gameStates;
 
     public GameState() {
-        state = STATE.INITIAL;
+        gameStates = GameStates.INITIAL;
     }
 
-    public STATE getState() {
-        return state;
+    public GameStates getState() {
+        return gameStates;
     }
 
-    public void setState(STATE s) {
-        this.state = s;
+    public void setState(GameStates s) {
+        this.gameStates = s;
     }
 
     public void noMatch() {
-        switch (state) {
+        switch (gameStates) {
             case INITIAL:
-                setState(STATE.ONE);
+                setState(GameStates.ONE);
                 break;
             case ONE:
-                setState(STATE.TWO);
+                setState(GameStates.TWO);
                 break;
             case TWO:
-                setState(STATE.THREE);
+                setState(GameStates.THREE);
                 break;
             case THREE:
             case OVER:
-                setState(STATE.OVER);
+                setState(GameStates.OVER);
                 break;
         }
     }

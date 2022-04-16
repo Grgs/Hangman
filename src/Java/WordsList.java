@@ -1,4 +1,4 @@
-public class Words {
+public class WordsList {
     public String[] wordList = {"abs", "ace", "act", "add", "ado", "ads", "adz", "aft", "age", "ago", "aha", "aid",
             "ail", "aim", "air", "alb", "ale", "all", "alp", "amp", "and", "ani", "ant", "any", "ape", "apt", "arc",
             "are", "ark", "arm", "art", "ash", "ask", "asp", "ate", "auk", "awe", "awl", "awn", "axe", "aye", "baa",
