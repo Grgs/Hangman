@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -29,22 +30,22 @@ public class Main {
     public static void main(String[] args) {
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-        System.out.println(secretWord.getWord()); //debug
+//        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
 
         do {
             System.out.println(getAscii(gameState.gameStates));
             System.out.println(secretWord.displayMatchedCharacters());
             System.out.println("Guess a letter:");
-            String input = scanner.nextLine();
-            secretWord.checkChar(input.charAt(0));
+            char inputCharacter = getInputCharacter(scanner);
+            secretWord.checkChar(inputCharacter);
             switch (secretWord.wordMatch) {
                 case PART_MATCH:
-                    System.out.println("Matched: " + input.charAt(0));
+                    System.out.println("Matched: " + inputCharacter);
                     break;
                 case NO_MATCH:
                     gameState.noMatch();
-                    System.out.println("\"" + input.charAt(0) + "\" did not match.");
+                    System.out.println("\"" + inputCharacter + "\" did not match.");
                     break;
                 case ALL_MATCH:
                     gameState.setState(GameStates.WON);
@@ -63,5 +64,15 @@ public class Main {
         }
 
     }
+
+    private static char getInputCharacter(Scanner scanner) {
+        String inputString;
+        do {
+            inputString = scanner.nextLine();
+            inputString = inputString.replaceAll("[^a-zA-Z]", "");
+        } while (inputString.length() == 0);
+        return inputString.toLowerCase(Locale.ROOT).charAt(0);
+    }
+
 
 }
