@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -6,6 +7,7 @@ public class SecretWord {
     String word;
     WordChar[] wordChars = new WordChar[3];
     WordMatch wordMatch;
+    HashSet<Character> unmatchedChars = new HashSet<>();
 
     public SecretWord() {
         Random rnd = new Random();
@@ -25,9 +27,12 @@ public class SecretWord {
         if (Arrays.stream(wordChars).allMatch(ch -> ch.revealed)) {
             this.wordMatch = WordMatch.ALL_MATCH;
         }
+        if (this.wordMatch.equals(WordMatch.NO_MATCH)) {
+            this.unmatchedChars.add(c);
+        }
     }
 
-    public String displayWord() {
+    public String displayMatchedCharacters() {
         return Arrays.stream(wordChars).map(ch -> ch.revealed ? ch.c : "_").
                 collect(Collectors.toList()).toString();
     }

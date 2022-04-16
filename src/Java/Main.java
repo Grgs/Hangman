@@ -29,11 +29,12 @@ public class Main {
     public static void main(String[] args) {
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-//        System.out.println(secretWord.getWord()); //debug
+        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
 
         do {
             System.out.println(getAscii(gameState.gameStates));
+            System.out.println(secretWord.displayMatchedCharacters());
             System.out.println("Guess a letter:");
             String input = scanner.nextLine();
             secretWord.checkChar(input.charAt(0));
@@ -43,13 +44,14 @@ public class Main {
                     break;
                 case NO_MATCH:
                     gameState.noMatch();
+                    System.out.println("\"" + input.charAt(0) + "\" did not match.");
                     break;
                 case ALL_MATCH:
                     gameState.setState(GameStates.WON);
                     break;
             }
 
-            System.out.println(secretWord.displayWord());
+            System.out.println("Unmatched characters: " + secretWord.unmatchedChars);
         } while (gameState.getState() != GameStates.WON && gameState.getState() != GameStates.OVER);
 
         System.out.println("The Secret word is: " + secretWord.word);
