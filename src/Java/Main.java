@@ -27,6 +27,15 @@ public class Main {
         }
     }
 
+    private static char getInputCharacter(Scanner scanner) {
+        String inputString;
+        do {
+            inputString = scanner.nextLine();
+            inputString = inputString.replaceAll("[^a-zA-Z]", "");
+        } while (inputString.length() == 0);
+        return inputString.toLowerCase(Locale.ROOT).charAt(0);
+    }
+
     public static void main(String[] args) {
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
@@ -62,17 +71,5 @@ public class Main {
         } else {
             System.out.println("You Lost!");
         }
-
     }
-
-    private static char getInputCharacter(Scanner scanner) {
-        String inputString;
-        do {
-            inputString = scanner.nextLine();
-            inputString = inputString.replaceAll("[^a-zA-Z]", "");
-        } while (inputString.length() == 0);
-        return inputString.toLowerCase(Locale.ROOT).charAt(0);
-    }
-
-
 }
