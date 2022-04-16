@@ -6,8 +6,12 @@ public class GameState {
         state = STATE.INITIAL;
     }
 
+    public STATE getState() {
+        return state;
+    }
+
     public void setState(STATE s) {
-        state = s;
+        this.state = s;
     }
 
     public void noMatch() {

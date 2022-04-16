@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
 
     public static String getAscii(STATE state) {
@@ -27,15 +29,38 @@ public class Main {
     public static void main(String[] args) {
         // write your code here
         GameState gameState = new GameState();
-
-        gameState.setState(STATE.ONE);
-        gameState.noMatch();
-        for (STATE s : STATE.values()) {
-            System.out.println(getAscii(s));
-        }
         SecretWord secretWord = new SecretWord();
+        System.out.println(secretWord.getWord()); //debug
+        Scanner scanner = new Scanner(System.in);
 
-        System.out.println(secretWord.word);
+        do {
+            System.out.println(getAscii(gameState.state));
+            System.out.println("Guess a letter:");
+            String input = scanner.nextLine();
+            secretWord.checkChar(input.charAt(0));
+            switch (secretWord.wordState) {
+                case PART_MATCH:
+                    System.out.println("Matched: " + input.charAt(0));
+                    break;
+                case NO_MATCH:
+                    gameState.noMatch();
+                    break;
+                case ALL_MATCH:
+                    gameState.setState(STATE.WON);
+                    break;
+            }
+
+            System.out.println(secretWord.displayWord());
+        } while (gameState.getState() != STATE.WON && gameState.getState() != STATE.OVER);
+
+        System.out.println("The Secret word is: " + secretWord.word);
+
+        if (gameState.getState().equals(STATE.WON)) {
+            System.out.println("You Win!");
+        } else {
+            System.out.println("You Lost!");
+        }
+
     }
 
 }
