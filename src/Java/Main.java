@@ -27,7 +27,7 @@ public class Main {
         }
     }
 
-    private static char getInputCharacter(Scanner scanner) {
+    public static char getInputCharacter(Scanner scanner) {
         String inputString;
         do {
             inputString = scanner.nextLine();
@@ -43,7 +43,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println(getAscii(gameState.gameStates));
+            System.out.println(getAscii(gameState.getState()));
             System.out.println(secretWord.displayMatchedCharacters());
             System.out.println("Guess a letter:");
             char inputCharacter = getInputCharacter(scanner);

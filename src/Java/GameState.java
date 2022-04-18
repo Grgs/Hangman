@@ -1,21 +1,21 @@
 public class GameState {
 
-    public GameStates gameStates;
+    public GameStates state;
 
     public GameState() {
-        gameStates = GameStates.INITIAL;
+        state = GameStates.INITIAL;
     }
 
     public GameStates getState() {
-        return gameStates;
+        return state;
     }
 
     public void setState(GameStates s) {
-        this.gameStates = s;
+        this.state = s;
     }
 
     public void noMatch() {
-        switch (gameStates) {
+        switch (state) {
             case INITIAL:
                 setState(GameStates.ONE);
                 break;
