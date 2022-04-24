@@ -14,7 +14,6 @@ public class SecretWord {
     HashSet<Character> unmatchedChars = new HashSet<>();
 
     public SecretWord() {
-        Random rnd = new Random();
         wordChars = new ArrayList<>();
         this.setWord(this.getARandomWord());
         this.wordMatch = WordMatch.NO_MATCH;

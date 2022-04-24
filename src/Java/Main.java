@@ -1,38 +1,13 @@
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
 
-    public static String getAscii(EnumState enumState) {
-        String asciiTemplate = "H A N G M A N %n" +
-                " +----+ %n" +
-                "%s   | %n" +
-                "%s   | %n" +
-                "%s   | %n" +
-                "%s   | %n" +
-                "     ===%n";
-        switch (enumState) {
-            case INITIAL:
-                return String.format(asciiTemplate, "   ", "   ", "   ", "   ");
-            case ONE:
-                return String.format(asciiTemplate, " O ", "   ", "   ", "   ");
-            case TWO:
-                return String.format(asciiTemplate, " O ", " | ", "   ", "   ");
-            case THREE:
-                return String.format(asciiTemplate, " O ", "/| ", "   ", "   ");
-            case FOUR:
-                return String.format(asciiTemplate, " O ", "/|\\", "  ", "   ");
-            case FIVE:
-                return String.format(asciiTemplate, " O ", "/|\\", " | ", "   ");
-            case SIX:
-                return String.format(asciiTemplate, " O ", "/|\\", " | ", "/  ");
-            case OVER:
-                return String.format(asciiTemplate, " O ", "/|\\", " | ", "/ \\");
-            case WON:
-                return String.format(" 0 %n/|\\%n | %n/ \\%n");
-            default:
-                return "";
-        }
+    public static String getAscii(Properties properties, EnumState enumState) {
+        return (String) properties.get("asciiArt" + enumState.ordinal());
     }
 
     public static char getInputCharacter(Scanner scanner) {
@@ -45,13 +20,24 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        FileReader fileReader;
+        Properties properties;
+        try {
+            fileReader = new FileReader("game.properties");
+            properties = new Properties();
+            properties.load(fileReader);
+            fileReader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-        System.out.println(secretWord.getWord()); //debug
+//        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
 
         do {
-            System.out.println(getAscii(gameState.getState()));
+            System.out.println(getAscii(properties, gameState.getState()));
             System.out.println(secretWord.displayMatchedCharacters());
             System.out.println("Guess a letter:");
             char inputCharacter = getInputCharacter(scanner);
@@ -74,7 +60,7 @@ public class Main {
 
         System.out.println(secretWord.displayMatchedCharacters());
         System.out.println("The Secret word is: " + secretWord.word);
-        System.out.println(getAscii(gameState.getState()));
+        System.out.println(getAscii(properties, gameState.getState()));
 
         if (gameState.getState().equals(EnumState.WON)) {
             System.out.println("You Win!");
