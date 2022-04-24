@@ -27,7 +27,7 @@ public class Main {
 
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-//        System.out.println(secretWord.getWord()); //debug
+        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
 
         do {

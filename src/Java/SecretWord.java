@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -34,19 +31,22 @@ public class SecretWord {
     }
 
     public void checkChar(char c) {
-        this.wordMatch = WordMatch.NO_MATCH;
-        for (WordChar wordChar : this.wordChars) {
-            if (wordChar.c == c) {
-                wordChar.revealed = true;
+        if (!this.word.contains(String.valueOf(c))) {
+            this.unmatchedChars.add(c);
+            this.wordMatch = WordMatch.NO_MATCH;
+        } else {
+            this.wordChars = (ArrayList<WordChar>) this.wordChars.stream().peek(w -> {
+                if (w.c == c) {
+                    w.revealed = true;
+                }
+            }).collect(Collectors.toList());
+            if (wordChars.stream().allMatch(ch -> ch.revealed)) {
+                this.wordMatch = WordMatch.ALL_MATCH;
+            } else {
                 this.wordMatch = WordMatch.PART_MATCH;
             }
         }
-        if (wordChars.stream().allMatch(ch -> ch.revealed)) {
-            this.wordMatch = WordMatch.ALL_MATCH;
-        }
-        if (this.wordMatch.equals(WordMatch.NO_MATCH)) {
-            this.unmatchedChars.add(c);
-        }
+
     }
 
     public String displayMatchedCharacters() {
@@ -61,9 +61,8 @@ public class SecretWord {
     public void setWord(String word) {
         this.word = word;
         this.wordChars = new ArrayList<>();
-        for (char c : this.word.toCharArray()) {
-            this.wordChars.add(new WordChar(c, false));
-        }
+        this.wordChars.addAll(Arrays.stream(this.word.split("")).
+                map(c -> new WordChar(c.charAt(0), false)).collect(Collectors.toList()));
     }
 
 }
