@@ -1,34 +1,20 @@
 public class GameState {
 
-    public GameStates state;
+    public EnumState state;
 
     public GameState() {
-        state = GameStates.INITIAL;
+        state = EnumState.INITIAL;
     }
 
-    public GameStates getState() {
+    public EnumState getState() {
         return state;
     }
 
-    public void setState(GameStates s) {
+    public void setState(EnumState s) {
         this.state = s;
     }
 
     public void noMatch() {
-        switch (state) {
-            case INITIAL:
-                setState(GameStates.ONE);
-                break;
-            case ONE:
-                setState(GameStates.TWO);
-                break;
-            case TWO:
-                setState(GameStates.THREE);
-                break;
-            case THREE:
-            case OVER:
-                setState(GameStates.OVER);
-                break;
-        }
+        this.state = EnumState.values()[Math.min(this.state.ordinal() + 1, EnumState.OVER.ordinal())];
     }
 }

@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static String getAscii(GameStates gameStates) {
+    public static String getAscii(EnumState enumState) {
         String asciiTemplate = "H A N G M A N %n" +
                 " +----+ %n" +
                 "%s   | %n" +
@@ -11,17 +11,25 @@ public class Main {
                 "%s   | %n" +
                 "%s   | %n" +
                 "     ===%n";
-        switch (gameStates) {
+        switch (enumState) {
             case INITIAL:
                 return String.format(asciiTemplate, "   ", "   ", "   ", "   ");
             case ONE:
                 return String.format(asciiTemplate, " O ", "   ", "   ", "   ");
             case TWO:
-                return String.format(asciiTemplate, " O ", "/|\\", "   ", "   ");
+                return String.format(asciiTemplate, " O ", " | ", "   ", "   ");
             case THREE:
+                return String.format(asciiTemplate, " O ", "/| ", "   ", "   ");
+            case FOUR:
+                return String.format(asciiTemplate, " O ", "/|\\", "  ", "   ");
+            case FIVE:
                 return String.format(asciiTemplate, " O ", "/|\\", " | ", "   ");
+            case SIX:
+                return String.format(asciiTemplate, " O ", "/|\\", " | ", "/  ");
             case OVER:
                 return String.format(asciiTemplate, " O ", "/|\\", " | ", "/ \\");
+            case WON:
+                return String.format(" 0 %n/|\\%n | %n/ \\%n");
             default:
                 return "";
         }
@@ -57,17 +65,18 @@ public class Main {
                     System.out.println("\"" + inputCharacter + "\" did not match.");
                     break;
                 case ALL_MATCH:
-                    gameState.setState(GameStates.WON);
+                    gameState.setState(EnumState.WON);
                     break;
             }
 
             System.out.println("Unmatched characters: " + secretWord.unmatchedChars);
-        } while (gameState.getState() != GameStates.WON && gameState.getState() != GameStates.OVER);
+        } while (gameState.getState() != EnumState.WON && gameState.getState() != EnumState.OVER);
 
         System.out.println(secretWord.displayMatchedCharacters());
         System.out.println("The Secret word is: " + secretWord.word);
+        System.out.println(getAscii(gameState.getState()));
 
-        if (gameState.getState().equals(GameStates.WON)) {
+        if (gameState.getState().equals(EnumState.WON)) {
             System.out.println("You Win!");
         } else {
             System.out.println("You Lost!");
