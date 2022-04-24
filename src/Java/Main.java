@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
 
@@ -10,25 +11,18 @@ public class Main {
         return (String) properties.get("asciiArt" + enumState.ordinal());
     }
 
-    public static char getInputCharacter(Scanner scanner) {
-        String inputString;
-        do {
-            inputString = scanner.nextLine();
-            inputString = inputString.replaceAll("[^a-zA-Z]", "");
-        } while (inputString.length() == 0);
-        return inputString.toLowerCase(Locale.ROOT).charAt(0);
-    }
-
     public static void main(String[] args) {
         FileReader fileReader;
         Properties properties;
+        properties = new Properties();
         try {
             fileReader = new FileReader("game.properties");
-            properties = new Properties();
             properties.load(fileReader);
             fileReader.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            IntStream.range(0, EnumState.values().length).mapToObj(n -> properties.setProperty(
+                    "asciiArt" + n, "Game state " + n + "\n"));
+            System.out.println("Could not open properties file: " + e.getLocalizedMessage());
         }
 
         GameState gameState = new GameState();
@@ -40,7 +34,12 @@ public class Main {
             System.out.println(getAscii(properties, gameState.getState()));
             System.out.println(secretWord.displayMatchedCharacters());
             System.out.println("Guess a letter:");
-            char inputCharacter = getInputCharacter(scanner);
+            if (!scanner.hasNext("[a-zA-Z]")) {
+                scanner.nextLine();
+                System.out.println("Invalid input!");
+                continue;
+            }
+            char inputCharacter = scanner.next("[a-zA-Z]").toLowerCase(Locale.ROOT).charAt(0);
             secretWord.checkChar(inputCharacter);
             switch (secretWord.wordMatch) {
                 case PART_MATCH:
