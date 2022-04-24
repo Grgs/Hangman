@@ -18,12 +18,11 @@ class GameStateTest {
         assertEquals(EnumState.ONE, gameState.state);
         gameState.noMatch();
         assertEquals(EnumState.TWO, gameState.state);
+        gameState.setState(EnumState.FIVE);
         gameState.noMatch();
-        assertEquals(EnumState.THREE, gameState.state);
-//        gameState.noMatch();
-//        assertEquals(EnumState.OVER, gameState.state);
-//        gameState.noMatch();
-//        assertEquals(EnumState.OVER, gameState.state);
+        assertEquals(EnumState.SIX, gameState.state);
+        gameState.noMatch();
+        assertEquals(EnumState.OVER, gameState.state);
     }
 
     @Test
