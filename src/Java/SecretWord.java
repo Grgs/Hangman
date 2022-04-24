@@ -11,8 +11,8 @@ public class SecretWord {
 
     public SecretWord() {
         Random rnd = new Random();
-        WordsList wordsList = new WordsList();
-        this.setWord(wordsList.wordList[rnd.nextInt(wordsList.wordList.length - 1)]);
+//        WordsList wordsList = new WordsList();
+        this.setWord(WordsList.wordList[rnd.nextInt(WordsList.wordList.length - 1)]);
         this.wordMatch = WordMatch.NO_MATCH;
     }
 

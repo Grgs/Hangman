@@ -14,7 +14,6 @@ class SecretWordTest {
     void setUp() {
         secretWord = new SecretWord();
         secretWord.setWord("abc");
-//        secretWord.word = "abc";
 
     }
 
