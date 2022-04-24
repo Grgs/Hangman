@@ -39,7 +39,7 @@ public class Main {
     public static void main(String[] args) {
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-//        System.out.println(secretWord.getWord()); //debug
+        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
 
         do {
@@ -64,6 +64,7 @@ public class Main {
             System.out.println("Unmatched characters: " + secretWord.unmatchedChars);
         } while (gameState.getState() != GameStates.WON && gameState.getState() != GameStates.OVER);
 
+        System.out.println(secretWord.displayMatchedCharacters());
         System.out.println("The Secret word is: " + secretWord.word);
 
         if (gameState.getState().equals(GameStates.WON)) {

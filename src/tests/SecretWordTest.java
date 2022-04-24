@@ -20,21 +20,21 @@ class SecretWordTest {
     @Test
     void setWord() {
         assertAll(
-                () -> assertEquals('a', secretWord.wordChars[0].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed),
-                () -> assertEquals('b', secretWord.wordChars[1].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed),
-                () -> assertEquals('c', secretWord.wordChars[2].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed)
+                () -> assertEquals('a', secretWord.wordChars.get(0).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed),
+                () -> assertEquals('b', secretWord.wordChars.get(1).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed),
+                () -> assertEquals('c', secretWord.wordChars.get(2).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed)
         );
         secretWord.setWord("xyz");
         assertAll(
-                () -> assertEquals('x', secretWord.wordChars[0].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed),
-                () -> assertEquals('y', secretWord.wordChars[1].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed),
-                () -> assertEquals('z', secretWord.wordChars[2].c),
-                () -> assertEquals(false, secretWord.wordChars[0].revealed)
+                () -> assertEquals('x', secretWord.wordChars.get(0).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed),
+                () -> assertEquals('y', secretWord.wordChars.get(1).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed),
+                () -> assertEquals('z', secretWord.wordChars.get(2).c),
+                () -> assertEquals(false, secretWord.wordChars.get(0).revealed)
         );
     }
 
@@ -54,7 +54,8 @@ class SecretWordTest {
     void displayMatchedCharacters() {
         ArrayList<String> stringArrayList = new ArrayList<>(
                 List.of(new String[]{"_", "_", "_"}));
-        assertEquals(stringArrayList.toString(), secretWord.displayMatchedCharacters());
+        String displayWord = secretWord.displayMatchedCharacters();
+        assertEquals(stringArrayList.toString(), displayWord);
         stringArrayList = new ArrayList<>(List.of(new String[]{"_", "b", "_"}));
         secretWord.checkChar('b');
         assertEquals(stringArrayList.toString(), secretWord.displayMatchedCharacters());

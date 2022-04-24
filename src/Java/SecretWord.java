@@ -1,30 +1,48 @@
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SecretWord {
     String word;
-    WordChar[] wordChars = new WordChar[3];
+    ArrayList<WordChar> wordChars;
     WordMatch wordMatch;
     HashSet<Character> unmatchedChars = new HashSet<>();
 
     public SecretWord() {
         Random rnd = new Random();
-//        WordsList wordsList = new WordsList();
-        this.setWord(WordsList.wordList[rnd.nextInt(WordsList.wordList.length - 1)]);
+        wordChars = new ArrayList<>();
+        this.setWord(this.getARandomWord());
         this.wordMatch = WordMatch.NO_MATCH;
+    }
+
+    public String getARandomWord() {
+        File file = new File("english.txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            Random random = new Random();
+            int randNumber = random.nextInt(2047);
+            IntStream.range(0, randNumber).forEach((a) -> scanner.nextLine());
+            return scanner.nextLine();
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getLocalizedMessage());
+            return "error";
+        }
     }
 
     public void checkChar(char c) {
         this.wordMatch = WordMatch.NO_MATCH;
-        for (int i = 0; i < 3; i++) {
-            if (this.wordChars[i].c == c) {
-                this.wordChars[i].revealed = true;
+        for (WordChar wordChar : this.wordChars) {
+            if (wordChar.c == c) {
+                wordChar.revealed = true;
                 this.wordMatch = WordMatch.PART_MATCH;
             }
         }
-        if (Arrays.stream(wordChars).allMatch(ch -> ch.revealed)) {
+        if (wordChars.stream().allMatch(ch -> ch.revealed)) {
             this.wordMatch = WordMatch.ALL_MATCH;
         }
         if (this.wordMatch.equals(WordMatch.NO_MATCH)) {
@@ -33,7 +51,7 @@ public class SecretWord {
     }
 
     public String displayMatchedCharacters() {
-        return Arrays.stream(wordChars).map(ch -> ch.revealed ? ch.c : "_").
+        return wordChars.stream().map(ch -> ch.revealed ? ch.c : "_").
                 collect(Collectors.toList()).toString();
     }
 
@@ -43,9 +61,10 @@ public class SecretWord {
 
     public void setWord(String word) {
         this.word = word;
-        this.wordChars[0] = new WordChar(this.word.charAt(0), false);
-        this.wordChars[1] = new WordChar(this.word.charAt(1), false);
-        this.wordChars[2] = new WordChar(this.word.charAt(2), false);
+        this.wordChars = new ArrayList<>();
+        for (char c : this.word.toCharArray()) {
+            this.wordChars.add(new WordChar(c, false));
+        }
     }
 
 }
