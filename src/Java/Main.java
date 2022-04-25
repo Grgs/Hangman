@@ -1,5 +1,6 @@
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Scanner;
@@ -11,6 +12,47 @@ public class Main {
         return (String) properties.get("asciiArt" + enumState.ordinal());
     }
 
+    private static void saveWinningScore(int secretWordLength, Scanner scanner, Instant startTime) {
+        Instant endTime = Instant.now();
+        FileInputStream fileInputStream;
+        FileOutputStream fileOutputStream;
+        ObjectInputStream objectInputStream;
+        ObjectOutputStream objectOutputStream;
+        try {
+            fileInputStream = new FileInputStream("winnerList.ser");
+            objectInputStream = new ObjectInputStream(fileInputStream);
+
+            scanner.nextLine();
+            System.out.println("Enter your name:");
+            String winnerName = scanner.nextLine();
+            int score = (int) (10000000 * secretWordLength /
+                    Duration.between(startTime, endTime).toMillis());
+            System.out.printf("Winner name: %s\tScore: %d%n", winnerName, score);
+            Winners winners = (Winners) objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+            Winner winner = new Winner(winnerName, score);
+            winners.setWinner(winner);
+            if (winner.isEqual(winners.getTopWinner()))
+                System.out.println("You have the highest score!");
+
+            System.out.printf("%nPrevious winners:%n");
+            winners.winners.forEach(System.out::println);
+
+            fileOutputStream = new FileOutputStream("winnerList.ser");
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+
+            objectOutputStream.writeObject(winners);
+            objectOutputStream.close();
+            fileOutputStream.close();
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("Error saving score: " + e.getLocalizedMessage());
+        }
+
+        System.out.printf("Time elapsed: %ss%n", Duration.between(startTime, endTime).toSeconds());
+    }
+
     public static void main(String[] args) {
         FileReader fileReader;
         Properties properties;
@@ -20,15 +62,16 @@ public class Main {
             properties.load(fileReader);
             fileReader.close();
         } catch (IOException e) {
-            IntStream.range(0, EnumState.values().length).mapToObj(n -> properties.setProperty(
+            IntStream.range(0, EnumState.values().length).forEach(n -> properties.setProperty(
                     "asciiArt" + n, "Game state " + n + "\n"));
             System.out.println("Could not open properties file: " + e.getLocalizedMessage());
         }
 
         GameState gameState = new GameState();
         SecretWord secretWord = new SecretWord();
-        System.out.println(secretWord.getWord()); //debug
+//        System.out.println(secretWord.getWord()); //debug
         Scanner scanner = new Scanner(System.in);
+        Instant startTime = Instant.now();
 
         do {
             System.out.println(getAscii(properties, gameState.getState()));
@@ -63,6 +106,7 @@ public class Main {
 
         if (gameState.getState().equals(EnumState.WON)) {
             System.out.println("You Win!");
+            saveWinningScore(secretWord.word.length(), scanner, startTime);
         } else {
             System.out.println("You Lost!");
         }
