@@ -100,6 +100,7 @@ public class Main {
             System.out.println("Unmatched characters: " + secretWord.unmatchedChars);
         } while (gameState.getState() != EnumState.WON && gameState.getState() != EnumState.OVER);
 
+        // the game has ended, so we reveal the word to the player
         System.out.println(secretWord.displayMatchedCharacters());
         System.out.println("The Secret word is: " + secretWord.word);
         System.out.println(getAscii(properties, gameState.getState()));
